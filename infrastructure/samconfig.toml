@@ -1,0 +1,16 @@
+version=0.1
+
+[default.build.parameters]
+beta_features = true
+[default.sync.parameters]
+beta_features = true
+
+[default.deploy.parameters]
+stack_name = "account-data-backend"
+region = "eu-west-2"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1r0t41rqride8"
+s3_prefix = "account-data-backend"
+capabilities = "CAPABILITY_NAMED_IAM"
+confirm_changeset = true
+tags = "project=\"account-data-backend\" stage=\"dev\""
+image_repositories = []
