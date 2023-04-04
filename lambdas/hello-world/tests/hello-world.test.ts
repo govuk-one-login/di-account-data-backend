@@ -1,5 +1,4 @@
 import "aws-sdk-client-mock-jest";
-import { mockClient } from "aws-sdk-client-mock";
 import { helloWorld } from "../hello-world";
 
 
@@ -7,7 +6,7 @@ describe("hello-world", () => {
     let consoleMock: jest.SpyInstance;
 
     beforeEach(() => {
-        consoleMock = jest 
+        consoleMock = jest
         .spyOn(global.console, "info")
         .mockImplementation();
     });
@@ -20,4 +19,4 @@ describe("hello-world", () => {
      helloWorld();
      expect(consoleMock).toHaveBeenCalledWith("Hello world");
     });
-}); 
+});
