@@ -1,3 +1,3 @@
-export function helloWorld() {
-    console.info("Hello world");
+export default function helloWorld() {
+  console.info("Hello world");
 }
