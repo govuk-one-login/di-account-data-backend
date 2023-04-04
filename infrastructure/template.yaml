@@ -77,6 +77,10 @@ Resources:
   HelloWorldRole:
     Type: AWS::IAM::Role
     Properties:
+      PermissionsBoundary: !If
+        - UsePermissionsBoundary
+        - !Ref PermissionsBoundary
+        - !Ref AWS::NoValue
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
@@ -101,6 +105,13 @@ Resources:
             Action:
               - sqs:SendMessage
             Resource: !GetAtt HelloWorldDeadLetterQueue.Arn
+          - Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:GenerateDataKey*
+              - kms:ReEncrypt*
+            Resource:
+              - !GetAtt QueueKmsKey.Arn
 
   HelloWorldDeadLetterQueue:
     Type: AWS::SQS::Queue

@@ -1,0 +1,14 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "account-data-backend"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1ev94jtpjg7w7"
+s3_prefix = "account-data-backend"
+region = "eu-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
+disable_rollback = true
+parameter_overrides = "CodeSigningConfigArn=\"none\" PermissionsBoundary=\"none\" VpcStackName=\"vpc\""
+image_repositories = []
+signing_profiles = "HelloWorldFunction=\"SigningProfile_ZHY23i4JzofQ\""
