@@ -3,6 +3,16 @@ Transform: AWS::Serverless-2016-10-31
 Description: "A template to create the GOV.UK One login Account Data backend infrastructure."
 
 Parameters:
+  Environment:
+    Description: "The environment type"
+    Type: "String"
+    AllowedValues:
+      - "dev"
+      - "build"
+      - "staging"
+      - "integration"
+      - "production"
+    ConstraintDescription: must be dev, build, staging, integration or production
   CodeSigningConfigArn:
     Type: String
     Description: >
@@ -32,6 +42,12 @@ Conditions:
       - Fn::Equals:
           - !Ref PermissionsBoundary
           - "none"
+
+  IsNotDevelopment:
+    Fn::Not:
+      - Fn::Equals:
+          - !Ref Environment
+          - "dev"
 Globals:
   Function:
     CodeSigningConfigArn: !If
