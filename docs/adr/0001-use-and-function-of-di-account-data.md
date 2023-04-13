@@ -1,0 +1,41 @@
+# Use and function of the DI Account Data AWS accounts and repositories
+
+## Summary
+
+We will store ADRs within the `/docs` folder of this repository. These will log the architectural choices we have made, why, and consequences.
+
+We'll do this for the same reasons stated in detail in [di-account-management-backend#31](https://github.com/alphagov/di-account-management-backend/pull/31), see there to know more.
+
+## Background
+
+2023 Initiative work identified a growing need for services that were relevant to the Account Pod functionality. These services didn't always fit clearly within existing team remits, or were work that could be usefully shared between teams within the pod (notably, Account Alpha and Auth).
+
+There was also an aspiration to continue to enforce [AWS accounts as a security boundary](https://github.com/alphagov/digital-identity-architecture/blob/main/adr/0065-aws-accounts-are-a-security-boundary.md), so ensuring teams working directly on have access to their environments but others without reason do not. However there is also a desire to increase collaboration across the pod, ensure a logical separation of specific functions (Auth, Orchesration and Account Management frontend), from infrastructure that may help deliver and store data that, that could be of more general use.
+
+At the same time there was a concern that future features driving the program could see an increased interest in data held by the Auth / Account management team (Orchestration's session store for Face-to-Face features, the service card database in accounts for usage histories and potential upcomming feaures like an activity log for potential future user support tasks). Initiatives around account interventions also require infrastructure to support event triggers from one part of the program (Fraud), having an impact within features run by teams (Auth and account suspension). There was a concern about coupling this cross program infrastructure too closely to teams by embedding it within team feature accounts.
+
+## Principles
+
+- Ensure AWS accounts continue to be a useful security boundary, minimised access controls to features.
+- Where collaboration can take place between teams create new accounts with overlapping access controls
+- Ensure that where data or infrastructure that is of general cross program use exists, it is embedded in an account with appropriate access controls and security considerations. Avoid turning the account management frontend or Auth becomming a direct data source for the rest of the program.
+
+## What should be stored inside?
+
+To support the aims described in background and principles above, the `di-account-data-*` accounts should be a target for:
+
+- Code to help data that is common to the account pod transit around the program (for example Account Interventions work)
+- Data that is of common interest to the program stored at rest
+
+## Outcome
+
+We have created new accounts:
+
+- `di-account-data-dev` (590968168080)
+- `di-account-data-build` (748818073862)
+- `di-account-data-staging` (054401821868)
+- `di-account-data-integration` (266608194701)
+- `di-account-data-production` (266608194701)
+
+Access controls have been provided to the Account Alpha team and Tech lead of Auth team in initial provisioning.
+However access will be open to any developer, with reason, within the Account Pod (Auth, Account Alpha, Account Bravo).
