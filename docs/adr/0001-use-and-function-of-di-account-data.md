@@ -1,5 +1,9 @@
 # Use and function of the DI Account Data AWS accounts and repositories
 
+**Note: Plan described here was current to Spring 2023**
+**Intended use of the space has changed since delivery**
+**See note at the bottom, and subsequent ADRs for revised plan**
+
 ## Summary
 
 We will store ADRs within the `/docs` folder of this repository. These will log the architectural choices we have made, why, and consequences.
@@ -39,3 +43,16 @@ We have created new accounts:
 
 Access controls have been provided to the Account Alpha team and Tech lead of Auth team in initial provisioning.
 However access will be open to any developer, with reason, within the Account Pod (Auth, Account Alpha, Account Bravo).
+
+## Change of plan
+
+In late spring 2023, initatives within GOV.UK One Login were re-organised.
+As such the delivery plan to use this AWS account for account interventions has been delayed.
+
+As a result the reason for this is no longer accurate, however delivery is complete.
+
+One of three outcomes should occur:
+
+1. We agree a new set of features that are candidates for this AWS account to use and match them to near term priorities (and follow up with an ADR explaining new usage)
+2. We agree to mothball this account, noting it has no immediate use but ensuring we can have it easily available for probably product directions later in the year, whilst examining how to minimise cost (would need a follow up ADR)
+3. We agree there is no future need for this account, and shut it down (with a note in the README and archiving this repo)
