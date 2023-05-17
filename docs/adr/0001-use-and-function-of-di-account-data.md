@@ -51,8 +51,22 @@ As such the delivery plan to use this AWS account for account interventions has 
 
 As a result the reason for this is no longer accurate, however delivery is complete.
 
-One of three outcomes should occur:
+Tech Leads for the Account pod, along with Lead devs and architects met in mid may to discuss the future of this account.
+
+We considered the following outcomes:
 
 1. We agree a new set of features that are candidates for this AWS account to use and match them to near term priorities (and follow up with an ADR explaining new usage)
 2. We agree to mothball this account, noting it has no immediate use but ensuring we can have it easily available for probably product directions later in the year, whilst examining how to minimise cost (would need a follow up ADR)
 3. We agree there is no future need for this account, and shut it down (with a note in the README and archiving this repo)
+
+### Outcome
+
+We agreed there is a future need for this account space, both in terms of near and medium term features and an aspiration to gradually remodel the landscape of data across the account pod (these will be detailed in a follow up ADR).
+
+We agreed therefore these accounts should stay.
+
+We agreed that access controls could be managed with IAM to both provide broad access across the pod so users can work within the space, but specific limitations and protections so that user data is only accesible to a smaller group. We also acknowledged we may need to give the control tower team more time and requirements in advance if we wish that to be implimented.
+
+We agreed we would migrate the accounts to control tower.
+
+We agreed we would begin to describe in more detail the actual architectural models we'd expect to appear within this account around data storage and transfer. Including soliciting advice from our AWS experts on the topic. Results of that will appear in follow up ADRs.
