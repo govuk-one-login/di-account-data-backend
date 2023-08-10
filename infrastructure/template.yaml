@@ -71,6 +71,8 @@ Globals:
 Resources:
   BackupWrapperKey:
     Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Description: A backup key used to encrypt the data key for envelope encryption
       EnableKeyRotation: true
