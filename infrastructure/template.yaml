@@ -19,6 +19,31 @@ Parameters:
       The name of the stack that defines the VPC in which these resources will
       run.
     Default: vpc
+  Environment:
+    Description: The name of the environment to deploy to (provided by the pipeline)
+    Type: String
+    AllowedValues:
+      - dev
+      - build
+      - staging
+      - integration
+      - production
+  OwnerTagValue:
+    Description: Value for the Owner Tag
+    Type: String
+    Default: govuk-accounts-tech@digital.cabinet-office.gov.uk
+  ProductTagValue:
+    Description: Value for the Product Tag
+    Type: String
+    Default: GOV.UK One Login
+  SourceTagValue:
+    Description: Value for the Source Tag
+    Type: String
+    Default: https://github.com/alphagov/di-account-data-backend/blob/main/infrastructure/template.yaml
+  SystemTagValue:
+    Description: Value for the System Tag
+    Type: String
+    Default: Account Management
 
 Conditions:
   UseCodeSigning:
@@ -44,3 +69,36 @@ Globals:
       - !Ref AWS::NoValue
 
 Resources:
+  BackupWrapperKey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: A backup key used to encrypt the data key for envelope encryption
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "Allow IAM to manage access to the key"
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action: "kms:*"
+            Resource: "*"
+      Tags:
+        - Key: Product
+          Value: !Ref ProductTagValue
+        - Key: System
+          Value: !Ref SystemTagValue
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref OwnerTagValue
+        - Key: Source
+          Value: !Ref SourceTagValue
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-BackupWrapperKey"
+
+  BackupWrapperKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub "alias/${AWS::StackName}-BackupWrapperKey"
+      TargetKeyId: !GetAtt BackupWrapperKey.Arn
