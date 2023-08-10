@@ -13,12 +13,12 @@ Parameters:
     Description: >
       The ARN of the permissions boundary to apply to any role created by the template
     Default: "none"
-  VpcStackName:
-    Type: String
-    Description: >
-      The name of the stack that defines the VPC in which these resources will
-      run.
-    Default: vpc
+  #VpcStackName:
+  #  Type: String
+  #  Description: >
+  #    The name of the stack that defines the VPC in which these resources will
+  #    run.
+  #  Default: vpc
   Environment:
     Description: The name of the environment to deploy to (provided by the pipeline)
     Type: String
