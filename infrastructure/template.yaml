@@ -28,7 +28,7 @@ Parameters:
       - staging
       - integration
       - production
-  OwnerTagValue:
+  HomeTeamOwnerTagValue:
     Description: Value for the Owner Tag
     Type: String
     Default: govuk-accounts-tech@digital.cabinet-office.gov.uk
@@ -93,7 +93,7 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
         - Key: Owner
-          Value: !Ref OwnerTagValue
+          Value: !Ref HomeTeamOwnerTagValue
         - Key: Source
           Value: !Ref SourceTagValue
         - Key: Name
