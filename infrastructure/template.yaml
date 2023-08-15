@@ -13,12 +13,37 @@ Parameters:
     Description: >
       The ARN of the permissions boundary to apply to any role created by the template
     Default: "none"
-  VpcStackName:
+  #VpcStackName:
+  #  Type: String
+  #  Description: >
+  #    The name of the stack that defines the VPC in which these resources will
+  #    run.
+  #  Default: vpc
+  Environment:
+    Description: The name of the environment to deploy to (provided by the pipeline)
     Type: String
-    Description: >
-      The name of the stack that defines the VPC in which these resources will
-      run.
-    Default: vpc
+    AllowedValues:
+      - dev
+      - build
+      - staging
+      - integration
+      - production
+  HomeTeamOwnerTagValue:
+    Description: Value for the Owner Tag
+    Type: String
+    Default: govuk-accounts-tech@digital.cabinet-office.gov.uk
+  ProductTagValue:
+    Description: Value for the Product Tag
+    Type: String
+    Default: GOV.UK One Login
+  SourceTagValue:
+    Description: Value for the Source Tag
+    Type: String
+    Default: https://github.com/alphagov/di-account-data-backend/blob/main/infrastructure/template.yaml
+  SystemTagValue:
+    Description: Value for the System Tag
+    Type: String
+    Default: Account Management
 
 Conditions:
   UseCodeSigning:
@@ -44,132 +69,38 @@ Globals:
       - !Ref AWS::NoValue
 
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Architectures: ["arm64"]
-      CodeUri: ../lambdas/hello-world/
-      Handler: hello-world.helloWorld
-      KmsKeyArn: !GetAtt LambdaKMSKey.Arn
-      Runtime: nodejs18.x
-      PackageType: Zip
-      MemorySize: 128
-      ReservedConcurrentExecutions: 10
-      Role: !GetAtt HelloWorldRole.Arn
-      DeadLetterQueue:
-        Type: SQS
-        TargetArn: !GetAtt HelloWorldDeadLetterQueue.Arn
-      VpcConfig:
-        SubnetIds:
-          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdA
-          - Fn::ImportValue: !Sub ${VpcStackName}-PrivateSubnetIdB
-        SecurityGroupIds:
-          - Fn::ImportValue: !Sub ${VpcStackName}-AWSServicesEndpointSecurityGroupId
-    Metadata:
-      BuildMethod: esbuild
-      BuildProperties:
-        Minify: true
-        Target: "es2020"
-        Sourcemap: true
-        EntryPoints:
-          - hello-world.ts
-
-  HelloWorldRole:
-    Type: AWS::IAM::Role
-    Properties:
-      PermissionsBoundary: !If
-        - UsePermissionsBoundary
-        - !Ref PermissionsBoundary
-        - !Ref AWS::NoValue
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
-        - !Ref HelloWorldPolicy
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - lambda.amazonaws.com
-            Action:
-              - "sts:AssumeRole"
-
-  HelloWorldPolicy:
-    Type: AWS::IAM::ManagedPolicy
-    Properties:
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Action:
-              - sqs:SendMessage
-            Resource: !GetAtt HelloWorldDeadLetterQueue.Arn
-          - Effect: Allow
-            Action:
-              - kms:Decrypt
-              - kms:GenerateDataKey*
-              - kms:ReEncrypt*
-            Resource:
-              - !GetAtt QueueKmsKey.Arn
-
-  HelloWorldDeadLetterQueue:
-    Type: AWS::SQS::Queue
-    DeletionPolicy: Delete
-    UpdateReplacePolicy: Delete
-    Properties:
-      MessageRetentionPeriod: 1209600
-      KmsMasterKeyId: !GetAtt QueueKmsKey.Arn
-
-  #######################
-  # Encryption
-  #######################
-
-  QueueKmsKey:
+  BackupWrapperKey:
     Type: AWS::KMS::Key
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
+      Description: A backup key used to encrypt the data key for envelope encryption
       EnableKeyRotation: true
       KeyPolicy:
         Version: "2012-10-17"
         Statement:
-          - Effect: Allow
+          - Sid: "Allow IAM to manage access to the key"
+            Effect: Allow
             Principal:
-              AWS: !Sub arn:aws:iam::${AWS::AccountId}:root
-            Action: kms:*
-            Resource:
-              - "*"
-          - Effect: Allow
-            Principal:
-              Service: cloudwatch.amazonaws.com
-            Action: kms:*
-            Resource:
-              - "*"
-          - Effect: Allow
-            Principal:
-              Service: sns.amazonaws.com
-            Action:
-              - kms:Decrypt
-              - kms:GenerateDataKey
-            Resource:
-              - "*"
-
-  LambdaKMSKey:
-    Type: AWS::KMS::Key
-    Properties:
-      EnableKeyRotation: true
-      KeyPolicy:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              AWS: !Sub arn:aws:iam::${AWS::AccountId}:root
-            Action:
-              - "kms:*"
-            Resource:
-              - "*"
-          - Effect: "Allow"
-            Principal:
-              Service: "lambda.amazonaws.com"
-            Action:
-              - "kms:Decrypt"
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action: "kms:*"
             Resource: "*"
+      Tags:
+        - Key: Product
+          Value: !Ref ProductTagValue
+        - Key: System
+          Value: !Ref SystemTagValue
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref HomeTeamOwnerTagValue
+        - Key: Source
+          Value: !Ref SourceTagValue
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-BackupWrapperKey"
+
+  BackupWrapperKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: !Sub "alias/${AWS::StackName}-BackupWrapperKey"
+      TargetKeyId: !GetAtt BackupWrapperKey.Arn
