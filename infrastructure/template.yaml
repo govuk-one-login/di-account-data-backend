@@ -104,3 +104,11 @@ Resources:
     Properties:
       AliasName: !Sub "alias/${AWS::StackName}-BackupWrapperKey"
       TargetKeyId: !GetAtt BackupWrapperKey.Arn
+
+  BackupWrappingKeyArnSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: "Root ARN of the acctount-management-backend AWS account"
+      Name: !Sub "/${AWS::StackName}/${Environment}/AccountManagement/Backend/Root/ARN"
+      Type: String
+      Value: "arn:aws:iam::please-set-me-to-account-id:root"
