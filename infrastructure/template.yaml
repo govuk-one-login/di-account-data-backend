@@ -85,12 +85,12 @@ Resources:
               AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
             Action: "kms:*"
             Resource: "*"
-          - Sid: "Allow other AWS accounts to access the key"
-            Effect: Allow
-            Action: "kms:Encrypt"
-            Resource: "*"
-            Principal:
-              AWS: !Sub '{{resolve:ssm:/${AWS::StackName}/${Environment}/AccountManagement/Backend/Root/ARN}}'
+          # - Sid: "Allow other AWS accounts to access the key"
+          #   Effect: Allow
+          #   Action: "kms:Encrypt"
+          #   Resource: "*"
+          #   Principal:
+          #     AWS: !Sub '{{resolve:ssm:/${AWS::StackName}/${Environment}/AccountManagement/Backend/Root/ARN}}'
       Tags:
         - Key: Product
           Value: !Ref ProductTagValue
