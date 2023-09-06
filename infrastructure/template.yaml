@@ -109,6 +109,6 @@ Resources:
     Type: AWS::SSM::Parameter
     Properties:
       Description: "Root ARN of the acctount-management-backend AWS account"
-      Name: !Sub "/${AWS::StackName}/${Environment}/AccountManagement/Root/ARN"
+      Name: !Sub "/${AWS::StackName}/${Environment}/AccountManagement/WriteActivityRecordRole"
       Type: String
-      Value: "arn:aws:iam::please-set-me-to-account-id:root"
+      Value: "arn:aws:iam::985326104449:role/WriteActivityRecordRole"
