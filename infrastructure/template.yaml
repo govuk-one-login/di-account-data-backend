@@ -104,3 +104,12 @@ Resources:
     Properties:
       AliasName: !Sub "alias/${AWS::StackName}-BackupWrapperKey"
       TargetKeyId: !GetAtt BackupWrapperKey.Arn
+
+  AccountManagementBackendWriteActivityLogRoleSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: "Root ARN of the acctount-management-backend AWS account"
+      Name: !Sub "/${AWS::StackName}/${Environment}/AccountManagement/Backend/WriteActivityRecordRole"
+      Type: String
+      Value: "arn:aws:iam::<fill-in-account-id>:role/account-mgmt-backend-WriteActivityRecordRole-<fill-in-account-id>"
+      
