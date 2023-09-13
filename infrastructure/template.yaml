@@ -85,6 +85,12 @@ Resources:
               AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
             Action: "kms:*"
             Resource: "*"
+          - Sid: "Allow Account Management's write-activity-log function to encrypt using this key"
+            Effect: Allow
+            Action: "kms:Encrypt"
+            Resource: "*"
+            Principal:
+              AWS: !Sub '{{resolve:ssm:/${AWS::StackName}/${Environment}/AccountManagement/Backend/WriteActivityRecordRole}}'
       Tags:
         - Key: Product
           Value: !Ref ProductTagValue
@@ -112,4 +118,3 @@ Resources:
       Name: !Sub "/${AWS::StackName}/${Environment}/AccountManagement/Backend/WriteActivityRecordRole"
       Type: String
       Value: "arn:aws:iam::<fill-in-account-id>:role/account-mgmt-backend-WriteActivityRecordRole-<fill-in-account-id>"
-      
