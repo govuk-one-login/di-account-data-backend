@@ -39,7 +39,7 @@ Parameters:
   SourceTagValue:
     Description: Value for the Source Tag
     Type: String
-    Default: https://github.com/alphagov/di-account-data-backend/blob/main/infrastructure/template.yaml
+    Default: https://github.com/govuk-one-login/di-account-data-backend/blob/main/infrastructure/template.yaml
   SystemTagValue:
     Description: Value for the System Tag
     Type: String

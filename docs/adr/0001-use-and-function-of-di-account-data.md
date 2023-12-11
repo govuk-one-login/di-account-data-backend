@@ -8,13 +8,13 @@
 
 We will store ADRs within the `/docs` folder of this repository. These will log the architectural choices we have made, why, and consequences.
 
-We'll do this for the same reasons stated in detail in [di-account-management-backend#31](https://github.com/alphagov/di-account-management-backend/pull/31), see there to know more.
+We'll do this for the same reasons stated in detail in [di-account-management-backend#31](https://github.com/govuk-one-login/di-account-management-backend/pull/31), see there to know more.
 
 ## Background
 
 2023 Initiative work identified a growing need for services that were relevant to the Account Pod functionality. These services didn't always fit clearly within existing team remits, or were work that could be usefully shared between teams within the pod (notably, Account Alpha and Auth).
 
-There was also an aspiration to continue to enforce [AWS accounts as a security boundary](https://github.com/alphagov/digital-identity-architecture/blob/main/adr/0065-aws-accounts-are-a-security-boundary.md), so ensuring teams working directly on have access to their environments but others without reason do not. However there is also a desire to increase collaboration across the pod, ensure a logical separation of specific functions (Auth, Orchesration and Account Management frontend), from infrastructure that may help deliver and store data that, that could be of more general use.
+There was also an aspiration to continue to enforce [AWS accounts as a security boundary](https://github.com/govuk-one-login/digital-identity-architecture/blob/main/adr/0065-aws-accounts-are-a-security-boundary.md), so ensuring teams working directly on have access to their environments but others without reason do not. However there is also a desire to increase collaboration across the pod, ensure a logical separation of specific functions (Auth, Orchesration and Account Management frontend), from infrastructure that may help deliver and store data that, that could be of more general use.
 
 At the same time there was a concern that future features driving the program could see an increased interest in data held by the Auth / Account management team (Orchestration's session store for Face-to-Face features, the service card database in accounts for usage histories and potential upcomming feaures like an activity log for potential future user support tasks). Initiatives around account interventions also require infrastructure to support event triggers from one part of the program (Fraud), having an impact within features run by teams (Auth and account suspension). There was a concern about coupling this cross program infrastructure too closely to teams by embedding it within team feature accounts.
 
