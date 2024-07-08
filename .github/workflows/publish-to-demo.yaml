@@ -89,7 +89,7 @@ jobs:
         run: sam build
 
       - name: Deploy SAM app
-        uses: alphagov/di-devplatform-upload-action@v2
+        uses: govuk-one-login/devplatform-upload-action@dc8158079d3976d613515180e543930cdbe73f5f # pin@v3.9.1
         with:
           artifact-bucket-name: ${{ secrets.DEMO_ARTIFACT_BUCKET_NAME }}
           signing-profile-name: ${{ secrets.DEMO_SIGNING_PROFILE_NAME }}
