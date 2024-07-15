@@ -1,4 +1,4 @@
-name: "Verify & Publish to Demo"
+name: "Verify & Publish to Demo."
 
 on:
   push:
