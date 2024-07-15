@@ -23,7 +23,6 @@ Parameters:
     Description: The name of the environment to deploy to (provided by the pipeline)
     Type: String
     AllowedValues:
-      - demo
       - dev
       - build
       - staging
