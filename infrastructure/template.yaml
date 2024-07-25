@@ -71,7 +71,6 @@ Globals:
 
 Resources:
   BackupWrapperKey:
-    DependsOn: AccountManagementBackendWriteActivityLogRoleSSM
     Type: AWS::KMS::Key
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
