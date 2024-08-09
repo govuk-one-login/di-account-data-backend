@@ -91,7 +91,7 @@ Resources:
             Action: "kms:Encrypt"
             Resource: "*"
             Principal:
-              AWS: !Sub '{{resolve:ssm:/${AWS::StackName}/${Environment}/AccountManagement/Backend/WriteActivityRecordRole}}'
+              AWS: !GetAtt AccountManagementBackendWriteActivityLogRoleSSM.Value
       Tags:
         - Key: Product
           Value: !Ref ProductTagValue
