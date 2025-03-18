@@ -30,7 +30,7 @@ jobs:
     uses: ./.github/workflows/lint-cloudformation.yaml
     secrets: inherit
     with:
-      gitRef: ${{ inputs.gitRef || main }}
+      gitRef: ${{ inputs.gitRef || 'main' }}
 
   deploy_to_dev:
     permissions:
